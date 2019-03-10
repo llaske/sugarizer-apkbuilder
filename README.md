@@ -48,7 +48,7 @@ To do that, before launching the docker command, update file `sugarizer/js/const
 	
 Replace string `server.sugarizer.org` by URL of your own server. If your server use HTTPS, replace `constant.http` by `constant.https`.
 
-Finally, launche the usual docker command.
+Finally, launch the usual docker command.
 
 ### Change activities on Sugarizer home view
 You could customize the set of activities visible by default on the Sugarizer home view. Let's suppose for example that you want to hide the Tank Operation activity.
@@ -59,7 +59,7 @@ To do that, before launching the docker command, update file `sugarizer/activiti
 
 Replace string `"favorite": true` by `"favorite": false`. You could change visibility of other activities in the same way.
 
-Finally, launche the usual docker command.
+Finally, launch the usual docker command.
 
 ### Change activity set
 You could customize the set of activities provided with Sugarizer to optimize size of the final APK file or to add your own activities. Let's suppose for example that you want to remove the Abecedarium activity.
@@ -72,7 +72,7 @@ Then completely remove directory `sugarizer/activities/Abecedarium.activity`.
 
 	rm -rf sugarizer/activities/Abecedarium.activity
 
-Finally, launche the usual docker command.
+Finally, launch the usual docker command.
 
 ## Learn more about APK builder
 If you want to understand how the APK builder docker container works, you could find docker source [here](src).
