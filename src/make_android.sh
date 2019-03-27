@@ -34,12 +34,28 @@ cp -r ../sugarizer/res/* ../sugarizer-cordova/res
 sed -i -e "s/org.olpc-france.sugarizer/org.olpc_france.sugarizer/" config.xml
 sed -i -e "s/\"landscape\"/\"userLandscape\"/" config.xml
 echo n | cordova platform add android@6.3.0
+cordova plugin remove cordova-plugin-camera --force
+cordova plugin remove cordova-plugin-compat --force
+cordova plugin remove cordova-plugin-device --force
+cordova plugin remove cordova-plugin-device-motion --force
+cordova plugin remove cordova-plugin-dialogs --force
+cordova plugin remove cordova-plugin-file --force
+cordova plugin remove cordova-plugin-fullscreen --force
+cordova plugin remove cordova-plugin-ios-longpress-fix --force
+cordova plugin remove cordova-plugin-media --force
+cordova plugin remove cordova-plugin-network-information --force
+cordova plugin remove cordova-plugin-qrscanner --force
+cordova plugin remove cordova-plugin-splashscreen --force
+cordova plugin remove cordova-plugin-vibration --force
+cordova plugin remove cordova-plugin-whitelist --force
+cordova plugin remove com.develcode.plugins.volumeControl --force
+cordova plugin remove cordova-plugin-file-transfer --force
+cordova plugin remove cordova-plugin-swift-support --force
 cordova plugin add cordova-plugin-camera@2.4.0
-cordova plugin add cordova-plugin-compat@1.2.0
+cordova plugin add cordova-plugin-file@4.3.1
 cordova plugin add cordova-plugin-device@1.1.0
 cordova plugin add cordova-plugin-device-motion@1.2.0
 cordova plugin add cordova-plugin-dialogs@1.2.0
-cordova plugin add cordova-plugin-file@4.3.1
 cordova plugin add cordova-plugin-file-transfer@1.6.0
 cordova plugin add cordova-plugin-fullscreen@1.1.0
 cordova plugin add cordova-plugin-ios-longpress-fix@1.1.0
