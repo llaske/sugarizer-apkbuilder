@@ -1,3 +1,4 @@
+![](images/sugarizer-apk-builder.png)
 
 # Sugarizer APK builder
 
