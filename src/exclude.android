@@ -7,6 +7,8 @@ test/
 build/
 node_modules/
 docs/
+xxxactivities/TurtleBlocksJS.activity/
+xxxactivities/Jappy.activity/
 activities/Etoys.activity/resources/
 activities/Abecedarium.activity/audio/*.mp3
 activities/Abecedarium.activity/audio/es/database/*.mp3

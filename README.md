@@ -13,7 +13,7 @@ Here's the command to launch:
 
 	git clone https://github.com/llaske/sugarizer
 	git clone https://github.com/llaske/cordova-plugin-sugarizeros
-	docker run --rm -it \
+	sudo docker run --rm -it \
 		 -v `pwd`/sugarizer:/sugarizer \
 		 -v `pwd`/cordova-plugin-sugarizeros:/cordova-plugin-sugarizeros \
 		 -v `pwd`:/output \
@@ -34,7 +34,9 @@ At the end of the process (could take **more than 10 minutes**) you will find a 
 Two arguments could be add at the end of the docker command:
 
 * `os` to generate Sugarizer OS - i.e. Sugarizer as a launcher - instead of Sugarizer,
-* `full` to avoid the minify JavaScript step. Build will be quicker but JavaScript code will not be optimized.
+* `full` to avoid the minify JavaScript step. Build will be quicker but JavaScript code will not be optimized,
+* `minsize` to reduce size of package by removing local resources in Abecedarium and Scratch,
+* `release` to generate an APK without debug information.
 
 ## Customize your APK
 

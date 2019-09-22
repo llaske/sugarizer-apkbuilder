@@ -53,14 +53,14 @@ cordova plugin add cordova-plugin-whitelist@1.3.1
 cordova plugin add https://github.com/manusimpson/Phonegap-Android-VolumeControl.git
 
 echo --- Detect Sugarizeros
-if [ "$1" == "os" -o "$2" == "os" ]; then
-  sed -i -e "s/&SugarizerOS/ -->/" config.xml
-  sed -i -e "s/SugarizerOS&/<!-- /" config.xml
-  sed -i -e "s/org.olpc_france.sugarizer/org.olpc_france.sugarizeros/" config.xml
-  sed -i -e "s/<name>Sugarizer/<name>Sugarizer OS/" config.xml
-  cordova plugin add ../cordova-plugin-sugarizeros
+if [ "$1" == "os" -o "$2" == "os" -o "$3" == "os" ]; then
+	sed -i -e "s/&SugarizerOS/ -->/" config.xml
+	sed -i -e "s/SugarizerOS&/<!-- /" config.xml
+	sed -i -e "s/org.olpc_france.sugarizer/org.olpc_france.sugarizeros/" config.xml
+	sed -i -e "s/<name>Sugarizer/<name>Sugarizer OS/" config.xml
+	cordova plugin add ../cordova-plugin-sugarizeros
 else
-  cordova plugin remove cordova-plugin-sugarizeros
+	cordova plugin remove cordova-plugin-sugarizeros
 fi
 
 echo --- Deleting previous content...
@@ -71,13 +71,21 @@ cd ..
 echo --- Copying content
 rsync -av --exclude-from='exclude.android' ../sugarizer/* www
 cp etoys_remote.index.html www/activities/Etoys.activity/index.html
-if [ "$1" != "full" -a "$2" != "full" ]; then
-  echo --- Minimize
-  cd ../sugarizer
-  npm install grunt grunt-contrib-jshint grunt-contrib-nodeunit grunt-contrib-uglify
-  grunt -v
-  cd ../sugarizer-cordova
-  cp -r ../sugarizer/build/* www/
+if [ "$1" == "minsize" -o "$2" == "minsize" -o "$3" == "minsize" -o "$4" == "minsize" ]; then
+	rm -rf www/activities/Abecedarium.activity/audio/en/*
+	rm -rf www/activities/Abecedarium.activity/audio/fr/*
+	rm -rf www/activities/Abecedarium.activity/audio/es/*
+	rm -rf www/activities/Abecedarium.activity/images/database/*
+	rm -rf www/activities/Scratch.activity/static/internal-assets/*
+	sed -i -e 's/class="offlinemode"//' www/activities/Scratch.activity/index.html
+fi
+if [ "$1" != "full" -a "$2" != "full" -a "$3" != "full" -a "$4" != "full" ]; then
+	echo --- Minimize Javascript files
+	cd ../sugarizer
+	npm install grunt grunt-contrib-jshint grunt-contrib-nodeunit grunt-contrib-uglify
+	grunt -v
+	cd ../sugarizer-cordova
+	cp -r ../sugarizer/build/* www/
 fi
 mkdir -p ../sugarizer-cordova/platforms/android/res/mipmap-xxhdpi
 mkdir -p ../sugarizer-cordova/platforms/android/res/mipmap-xxxhdpi
@@ -116,14 +124,33 @@ cp ../sugarizer/res/splash/android/drawable-port-xhdpi.png ../sugarizer-cordova/
 cp ../sugarizer/res/splash/android/drawable-port-xxhdpi.png ../sugarizer-cordova/platforms/android/res/drawable-port-xxhdpi/screen.png
 cp ../sugarizer/res/splash/android/drawable-port-xxxhdpi.png ../sugarizer-cordova/platforms/android/res/drawable-port-xxxhdpi/screen.png
 
-echo --- Build Cordova debug version
-cordova build android
+rm -f platforms/android/build/outputs/apk/*.apk
+if [ "$1" == "release" -o "$2" == "release" -o "$3" == "release" -o "$4" == "release" -o "$1" == "sign" -o "$2" == "sign" -o "$3" == "sign" -o "$4" == "sign" ]; then
+	echo --- Build Cordova release version
+	FILENAME=android-release-unsigned.apk
+	cordova build android --release
+else
+	echo --- Build Cordova debug version
+	FILENAME=android-debug.apk
+	cordova build android
+fi
+
+
+echo --- Sign release version
+if [ "$1" == "sign" -o "$2" == "sign" -o "$3" == "sign" -o "$4" == "sign" ]; then
+	cd platforms/android/build/outputs/apk
+	jarsigner -storepass sugarizer@android -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /output/sugarizer.keystore android-release-unsigned.apk sugarizer
+	jarsigner -verify -verbose -certs android-release-unsigned.apk
+/opt/android-sdk-linux/build-tools/28.0.3/zipalign -v 4 android-release-unsigned.apk android-release-signed.apk
+	cd ../../../../..
+	FILENAME=android-release-signed.apk
+fi
 
 echo --- Copy APK to output
-if [ "$1" == "os" -o "$2" == "os" ]; then
-	cp /sugarizer-cordova/platforms/android/build/outputs/apk/android-debug.apk /output/sugarizeros.apk
+if [ "$1" == "os" -o "$2" == "os" -o "$3" == "os" -o "$4" == "os" ]; then
+	cp /sugarizer-cordova/platforms/android/build/outputs/apk/$FILENAME /output/sugarizeros.apk
 else
-	cp /sugarizer-cordova/platforms/android/build/outputs/apk/android-debug.apk /output/sugarizer.apk
+	cp /sugarizer-cordova/platforms/android/build/outputs/apk/$FILENAME /output/sugarizer.apk
 fi
 
 date
