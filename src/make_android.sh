@@ -139,7 +139,7 @@ fi
 echo --- Sign release version
 if [ "$1" == "sign" -o "$2" == "sign" -o "$3" == "sign" -o "$4" == "sign" ]; then
 	cd platforms/android/build/outputs/apk
-	jarsigner -storepass sugarizer@android -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /output/sugarizer.keystore android-release-unsigned.apk sugarizer
+	jarsigner -storepass ${SUGARIZER_STOREPASS} -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /output/${SUGARIZER_KEYSTOREFILE} android-release-unsigned.apk ${SUGARIZER_STOREALIAS}
 	jarsigner -verify -verbose -certs android-release-unsigned.apk
 /opt/android-sdk-linux/build-tools/28.0.3/zipalign -v 4 android-release-unsigned.apk android-release-signed.apk
 	cd ../../../../..

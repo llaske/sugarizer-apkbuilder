@@ -36,7 +36,26 @@ Two arguments could be add at the end of the docker command:
 * `os` to generate Sugarizer OS - i.e. Sugarizer as a launcher - instead of Sugarizer,
 * `full` to avoid the minify JavaScript step. Build will be quicker but JavaScript code will not be optimized,
 * `minsize` to reduce size of package by removing local resources in Abecedarium and Scratch,
-* `release` to generate an APK without debug information.
+* `release` to generate an APK without debug information,
+* `sign` same than `release` but sign the APK at the end of generation.
+
+If you're using the `sign` option you have to provide several environment variables to docker:
+
+* `SUGARIZER_KEYSTOREFILE` is the name of the keystore file, should be located in the directory where the APK will be generated,
+* `SUGARIZER_STOREALIAS` is the alias used by the keystore file,
+* `SUGARIZER_STOREPASS` is the password used by the keystore file.
+
+To give the value to each variable, use the `-e` docker command. Here's an example:
+
+    sudo docker run --rm -it \
+             -v `pwd`/sugarizer:/sugarizer \
+             -v `pwd`/cordova-plugin-sugarizeros:/cordova-plugin-sugarizeros \
+             -v `pwd`:/output \
+             -e SUGARIZER_KEYSTOREFILE="sugarizer.keystore" \
+             -e SUGARIZER_STOREALIAS="myalias" \
+             -e SUGARIZER_STOREPASS="mypassword" \
+             llaske/sugarizer-apkbuilder:latest sign
+
 
 ## Customize your APK
 
