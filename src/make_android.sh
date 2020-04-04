@@ -50,6 +50,7 @@ cordova plugin add cordova-plugin-splashscreen@4.1.0
 cordova plugin add cordova-plugin-swift-support@3.1.1
 cordova plugin add cordova-plugin-vibration@2.1.1
 cordova plugin add cordova-plugin-whitelist@1.3.1
+cordova plugin add cordova-plugin-ionic-keyboard@2.2.0
 cordova plugin add https://github.com/manusimpson/Phonegap-Android-VolumeControl.git
 
 echo --- Detect Sugarizeros
