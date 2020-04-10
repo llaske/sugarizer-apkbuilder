@@ -70,7 +70,62 @@ rm -rf *
 cd ..
 
 echo --- Copying content
+for i in $*; do 
+  if [ ${i%%=*} = "exclude-activities" ]
+  then 
+    activities=${i#*=}
+    lastActivity=${activities##*,}
+    remaining=true
+    echo -e "\n" >> exclude.android
+    cp ../sugarizer/activities.json ../sugarizer/activities.bak.json
+    while [ $remaining == true ]
+    do
+      activity=${activities%%,*}
+      activities=${activities#*,}
+      if [ ${#activity} -gt 0 ]
+      then
+        sed -i "/${activity}/d" ../sugarizer/activities.json
+        echo "activities/$activity.activity/" >> exclude.android
+      fi
+      if [ $activity = $lastActivity ]
+      then
+        remaining=false
+      fi
+    done
+    sed -i "$(( $( wc -l < ../sugarizer/activities.json) ))s/,$//" ../sugarizer/activities.json
+  elif [ ${i%%=*} = "include-activities" ]
+  then
+    touch include.android
+    activities=${i#*=}
+    lastActivity=${activities##*,}
+    remaining=true
+    mv ../sugarizer/activities.json ../sugarizer/activities.bak.json
+    touch ../sugarizer/activities.json
+    echo -e "[" >> ../sugarizer/activities.json
+    while [ $remaining == true ]
+    do
+      activity=${activities%%,*}
+      activities=${activities#*,}
+      if [ ${#activity} -gt 0 ]
+      then
+        grep ${activity} ../sugarizer/activities.bak.json >> ../sugarizer/activities.json
+        echo "activities/$activity.activity/" >> include.android
+      fi
+      if [ $activity = $lastActivity ]
+      then
+        remaining=false
+      fi
+    done
+    echo -e "]" >> ../sugarizer/activities.json
+    sed -i "$(( $( wc -l < ../sugarizer/activities.json) -1 ))s/,$//" ../sugarizer/activities.json
+  fi
+done
+
 rsync -av --exclude-from='exclude.android' ../sugarizer/* www
+
+rm ../sugarizer/activities.json
+mv ../sugarizer/activities.bak.json ../sugarizer/activities.json
+
 cp etoys_remote.index.html www/activities/Etoys.activity/index.html
 if [ "$1" == "minsize" -o "$2" == "minsize" -o "$3" == "minsize" -o "$4" == "minsize" ]; then
 	rm -rf www/activities/Abecedarium.activity/audio/en/*
