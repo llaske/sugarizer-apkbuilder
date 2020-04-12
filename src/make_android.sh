@@ -53,24 +53,7 @@ cordova plugin add cordova-plugin-whitelist@1.3.1
 cordova plugin add cordova-plugin-ionic-keyboard@2.2.0
 cordova plugin add https://github.com/manusimpson/Phonegap-Android-VolumeControl.git
 
-echo --- Detect Sugarizeros
-if [ "$1" == "os" -o "$2" == "os" -o "$3" == "os" ]; then
-	sed -i -e "s/&SugarizerOS/ -->/" config.xml
-	sed -i -e "s/SugarizerOS&/<!-- /" config.xml
-	sed -i -e "s/org.olpc_france.sugarizer/org.olpc_france.sugarizeros/" config.xml
-	sed -i -e "s/<name>Sugarizer/<name>Sugarizer OS/" config.xml
-	cordova plugin add ../cordova-plugin-sugarizeros
-else
-	cordova plugin remove cordova-plugin-sugarizeros
-fi
-
-echo --- Deleting previous content...
-cd www
-rm -rf *
-cd ..
-
 echo --- Reading arguments
-
 minsize=false
 full=false
 release=false
@@ -143,6 +126,22 @@ for i in $*; do
   fi
 done
 
+echo --- Detect Sugarizeros
+if [ $os == true ]; then
+	sed -i -e "s/&SugarizerOS/ -->/" config.xml
+	sed -i -e "s/SugarizerOS&/<!-- /" config.xml
+	sed -i -e "s/org.olpc_france.sugarizer/org.olpc_france.sugarizeros/" config.xml
+	sed -i -e "s/<name>Sugarizer/<name>Sugarizer OS/" config.xml
+	cordova plugin add ../cordova-plugin-sugarizeros
+else
+	cordova plugin remove cordova-plugin-sugarizeros
+fi
+
+echo --- Deleting previous content...
+cd www
+rm -rf *
+cd ..
+
 echo --- Copying content
 rsync -av --exclude-from='exclude.android' ../sugarizer/* www
 
@@ -164,7 +163,8 @@ if [ $full == true ]; then
 	npm install grunt grunt-contrib-jshint grunt-contrib-nodeunit grunt-contrib-uglify
 	grunt -v
 	cd ../sugarizer-cordova
-	cp -r ../sugarizer/build/* www/
+  rsync -rav --exclude-from='exclude.android' ../sugarizer/build/* www/
+	# cp -r ../sugarizer/build/* www/
 fi
 mkdir -p ../sugarizer-cordova/platforms/android/res/mipmap-xxhdpi
 mkdir -p ../sugarizer-cordova/platforms/android/res/mipmap-xxxhdpi
