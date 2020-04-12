@@ -69,7 +69,14 @@ cd www
 rm -rf *
 cd ..
 
-echo --- Copying content
+echo --- Reading arguments
+
+minsize=false
+full=false
+release=false
+sign=false
+os=false
+
 for i in $*; do 
   if [ ${i%%=*} = "exclude-activities" ]
   then 
@@ -118,16 +125,32 @@ for i in $*; do
     done
     echo -e "]" >> ../sugarizer/activities.json
     sed -i "$(( $( wc -l < ../sugarizer/activities.json) -1 ))s/,$//" ../sugarizer/activities.json
+  elif [ $i = "minsize" ]
+  then
+    minsize=true
+  elif [ $i = "full" ]
+  then
+    full=true
+  elif [ $i = "release" ]
+  then
+    release=true
+  elif [ $i = "sign" ]
+  then
+    sign=true
+  elif [ $i = "os" ]
+  then
+    os=true
   fi
 done
 
+echo --- Copying content
 rsync -av --exclude-from='exclude.android' ../sugarizer/* www
 
 rm ../sugarizer/activities.json
 mv ../sugarizer/activities.bak.json ../sugarizer/activities.json
 
 cp etoys_remote.index.html www/activities/Etoys.activity/index.html
-if [ "$1" == "minsize" -o "$2" == "minsize" -o "$3" == "minsize" -o "$4" == "minsize" ]; then
+if [ $minsize == true ]; then
 	rm -rf www/activities/Abecedarium.activity/audio/en/*
 	rm -rf www/activities/Abecedarium.activity/audio/fr/*
 	rm -rf www/activities/Abecedarium.activity/audio/es/*
@@ -135,7 +158,7 @@ if [ "$1" == "minsize" -o "$2" == "minsize" -o "$3" == "minsize" -o "$4" == "min
 	rm -rf www/activities/Scratch.activity/static/internal-assets/*
 	sed -i -e 's/class="offlinemode"//' www/activities/Scratch.activity/index.html
 fi
-if [ "$1" != "full" -a "$2" != "full" -a "$3" != "full" -a "$4" != "full" ]; then
+if [ $full == true ]; then
 	echo --- Minimize Javascript files
 	cd ../sugarizer
 	npm install grunt grunt-contrib-jshint grunt-contrib-nodeunit grunt-contrib-uglify
@@ -181,7 +204,7 @@ cp ../sugarizer/res/splash/android/drawable-port-xxhdpi.png ../sugarizer-cordova
 cp ../sugarizer/res/splash/android/drawable-port-xxxhdpi.png ../sugarizer-cordova/platforms/android/res/drawable-port-xxxhdpi/screen.png
 
 rm -f platforms/android/build/outputs/apk/*.apk
-if [ "$1" == "release" -o "$2" == "release" -o "$3" == "release" -o "$4" == "release" -o "$1" == "sign" -o "$2" == "sign" -o "$3" == "sign" -o "$4" == "sign" ]; then
+if [ $release == true -o $sign == true ]; then
 	echo --- Build Cordova release version
 	FILENAME=android-release-unsigned.apk
 	cordova build android --release
@@ -193,7 +216,7 @@ fi
 
 
 echo --- Sign release version
-if [ "$1" == "sign" -o "$2" == "sign" -o "$3" == "sign" -o "$4" == "sign" ]; then
+if [ $sign == true ]; then
 	cd platforms/android/build/outputs/apk
 	jarsigner -storepass ${SUGARIZER_STOREPASS} -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /output/${SUGARIZER_KEYSTOREFILE} android-release-unsigned.apk ${SUGARIZER_STOREALIAS}
 	jarsigner -verify -verbose -certs android-release-unsigned.apk
@@ -203,7 +226,7 @@ if [ "$1" == "sign" -o "$2" == "sign" -o "$3" == "sign" -o "$4" == "sign" ]; the
 fi
 
 echo --- Copy APK to output
-if [ "$1" == "os" -o "$2" == "os" -o "$3" == "os" -o "$4" == "os" ]; then
+if [ $os == true ]; then
 	cp /sugarizer-cordova/platforms/android/build/outputs/apk/$FILENAME /output/sugarizeros.apk
 else
 	cp /sugarizer-cordova/platforms/android/build/outputs/apk/$FILENAME /output/sugarizer.apk
