@@ -135,7 +135,7 @@ if [ $minsize == true ]; then
 	rm -rf www/activities/Scratch.activity/static/internal-assets/*
 	sed -i -e 's/class="offlinemode"//' www/activities/Scratch.activity/index.html
 fi
-if [ $full == true ]; then
+if [ $full != true ]; then
 	echo --- Minimize Javascript files
 	cd ../sugarizer
 	npm install grunt grunt-contrib-jshint grunt-contrib-nodeunit grunt-contrib-uglify
