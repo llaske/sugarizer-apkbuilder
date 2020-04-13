@@ -59,6 +59,7 @@ full=false
 release=false
 sign=false
 os=false
+excluded=false
 
 for i in $*; do 
   if [ ${i%%=*} = "exclude-activities" ]
@@ -66,6 +67,8 @@ for i in $*; do
     activities=${i#*=}
     lastActivity=${activities##*,}
     remaining=true
+    excluded=true
+    cp exclude.android exclude.bak.android
     echo -e "\n" >> exclude.android
     cp ../sugarizer/activities.json ../sugarizer/activities.bak.json
     while [ $remaining == true ]
@@ -82,31 +85,6 @@ for i in $*; do
         remaining=false
       fi
     done
-    sed -i "$(( $( wc -l < ../sugarizer/activities.json) ))s/,$//" ../sugarizer/activities.json
-  elif [ ${i%%=*} = "include-activities" ]
-  then
-    touch include.android
-    activities=${i#*=}
-    lastActivity=${activities##*,}
-    remaining=true
-    mv ../sugarizer/activities.json ../sugarizer/activities.bak.json
-    touch ../sugarizer/activities.json
-    echo -e "[" >> ../sugarizer/activities.json
-    while [ $remaining == true ]
-    do
-      activity=${activities%%,*}
-      activities=${activities#*,}
-      if [ ${#activity} -gt 0 ]
-      then
-        grep ${activity} ../sugarizer/activities.bak.json >> ../sugarizer/activities.json
-        echo "activities/$activity.activity/" >> include.android
-      fi
-      if [ $activity = $lastActivity ]
-      then
-        remaining=false
-      fi
-    done
-    echo -e "]" >> ../sugarizer/activities.json
     sed -i "$(( $( wc -l < ../sugarizer/activities.json) -1 ))s/,$//" ../sugarizer/activities.json
   elif [ $i = "minsize" ]
   then
@@ -163,9 +141,14 @@ if [ $full == true ]; then
 	npm install grunt grunt-contrib-jshint grunt-contrib-nodeunit grunt-contrib-uglify
 	grunt -v
 	cd ../sugarizer-cordova
-  rsync -rav --exclude-from='exclude.android' ../sugarizer/build/* www/
-	# cp -r ../sugarizer/build/* www/
+  rsync -av --exclude-from='exclude.android' ../sugarizer/build/* www
 fi
+if [ $excluded == true ]
+then
+  rm exclude.android
+  mv exclude.bak.android exclude.android
+fi
+
 mkdir -p ../sugarizer-cordova/platforms/android/res/mipmap-xxhdpi
 mkdir -p ../sugarizer-cordova/platforms/android/res/mipmap-xxxhdpi
 mkdir -p ../sugarizer-cordova/platforms/android/res/mipmap-ldpi
