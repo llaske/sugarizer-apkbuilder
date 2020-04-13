@@ -31,12 +31,13 @@ Finally run the docker container [llaske/sugarizer-apkbuilder:latest](https://cl
 
 At the end of the process (could take **more than 10 minutes**) you will find a `sugarizer.apk` or a `sugarizeros.apk` in the output directory.
 
-Two arguments could be add at the end of the docker command:
+Few arguments could be add at the end of the docker command:
 
 * `os` to generate Sugarizer OS - i.e. Sugarizer as a launcher - instead of Sugarizer,
 * `full` to avoid the minify JavaScript step. Build will be quicker but JavaScript code will not be optimized,
 * `minsize` to reduce size of package by removing local resources in Abecedarium and Scratch,
 * `release` to generate an APK without debug information,
+* `exclude-activities` to exclude some activities from the APK (see **Change activity set** [below](#change-activity-set))
 * `sign` same than `release` but sign the APK at the end of generation.
 
 If you're using the `sign` option you have to provide several environment variables to docker:
@@ -84,17 +85,20 @@ Replace string `"favorite": true` by `"favorite": false`. You could change visib
 Finally, launch the usual docker command.
 
 ### Change activity set
-You could customize the set of activities provided with Sugarizer to optimize size of the final APK file or to add your own activities. Let's suppose for example that you want to remove the Abecedarium activity.
+You could customize the set of activities provided with Sugarizer to optimize size of the final APK file. Let's suppose for example that you want to remove the Abecedarium and the TurtleBlocksJS.
 
-To do that, before launching the docker command, first remove the line 15 in file `sugarizer/activities.json`:
+To do that, you could use the `exclude-activities` parameter. The value following this paremeter is the list of activity names to exclude, separated by commas without spaces.
 
-	{"id": "org.olpcfrance.Abecedarium", "name": "Abecedarium", "version": 5, "directory": "activities/Abecedarium.activity", "icon": "activity/activity-icon.svg", "favorite": true, "activityId": null},
+So to exclude Abecedarium and TurtleBlockJS activities, launch the docker command:
 
-Then completely remove directory `sugarizer/activities/Abecedarium.activity`.
+	sudo docker run --rm -it \
+		 -v `pwd`/sugarizer:/sugarizer \
+		 -v `pwd`/cordova-plugin-sugarizeros:/cordova-plugin-sugarizeros \
+		 -v `pwd`:/output \
+		 llaske/sugarizer-apkbuilder:latest exclude-activities=Abecedarium,TurtleBlocksJS
 
-	rm -rf sugarizer/activities/Abecedarium.activity
+Note that the activity name is the directory name where the activity is located without the `.activity` suffix. So for example, `EbookReader` for `EbookReader.activity`.
 
-Finally, launch the usual docker command.
 
 ## Learn more about APK builder
 If you want to understand how the APK builder docker container works, you could find docker source [here](src).
