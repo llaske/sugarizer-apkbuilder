@@ -62,46 +62,46 @@ os=false
 excluded=false
 
 for i in $*; do 
-  if [ ${i%%=*} = "exclude-activities" ]
-  then 
-    activities=${i#*=}
-    lastActivity=${activities##*,}
-    remaining=true
-    excluded=true
-    cp exclude.android exclude.bak.android
-    echo -e "\n" >> exclude.android
-    cp ../sugarizer/activities.json ../sugarizer/activities.bak.json
-    while [ $remaining == true ]
-    do
-      activity=${activities%%,*}
-      activities=${activities#*,}
-      if [ ${#activity} -gt 0 ]
-      then
-        sed -i "/${activity}/d" ../sugarizer/activities.json
-        echo "activities/$activity.activity/" >> exclude.android
-      fi
-      if [ $activity = $lastActivity ]
-      then
-        remaining=false
-      fi
-    done
-    sed -i "$(( $( wc -l < ../sugarizer/activities.json) -1 ))s/,$//" ../sugarizer/activities.json
-  elif [ $i = "minsize" ]
-  then
-    minsize=true
-  elif [ $i = "full" ]
-  then
-    full=true
-  elif [ $i = "release" ]
-  then
-    release=true
-  elif [ $i = "sign" ]
-  then
-    sign=true
-  elif [ $i = "os" ]
-  then
-    os=true
-  fi
+	if [ ${i%%=*} = "exclude-activities" ]
+	then 
+		activities=${i#*=}
+		lastActivity=${activities##*,}
+		remaining=true
+		excluded=true
+		cp exclude.android exclude.bak.android
+		echo -e "\n" >> exclude.android
+		cp ../sugarizer/activities.json ../sugarizer/activities.bak.json
+		while [ $remaining == true ]
+		do
+			activity=${activities%%,*}
+			activities=${activities#*,}
+			if [ ${#activity} -gt 0 ]
+			then
+				sed -i "/${activity}/d" ../sugarizer/activities.json
+				echo "activities/$activity.activity/" >> exclude.android
+			fi
+			if [ $activity = $lastActivity ]
+			then
+				remaining=false
+			fi
+		done
+		sed -i "$(( $( wc -l < ../sugarizer/activities.json) -1 ))s/,$//" ../sugarizer/activities.json
+	elif [ $i = "minsize" ]
+	then
+		minsize=true
+	elif [ $i = "full" ]
+	then
+		full=true
+	elif [ $i = "release" ]
+	then
+		release=true
+	elif [ $i = "sign" ]
+	then
+		sign=true
+	elif [ $i = "os" ]
+	then
+		os=true
+	fi
 done
 
 echo --- Detect Sugarizeros
@@ -141,12 +141,12 @@ if [ $full == true ]; then
 	npm install grunt grunt-contrib-jshint grunt-contrib-nodeunit grunt-contrib-uglify
 	grunt -v
 	cd ../sugarizer-cordova
-  rsync -av --exclude-from='exclude.android' ../sugarizer/build/* www
+	rsync -av --exclude-from='exclude.android' ../sugarizer/build/* www
 fi
 if [ $excluded == true ]
 then
-  rm exclude.android
-  mv exclude.bak.android exclude.android
+	rm exclude.android
+	mv exclude.bak.android exclude.android
 fi
 
 mkdir -p ../sugarizer-cordova/platforms/android/res/mipmap-xxhdpi
