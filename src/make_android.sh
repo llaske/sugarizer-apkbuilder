@@ -138,7 +138,7 @@ fi
 if [ $full != true ]; then
 	echo --- Minimize Javascript files
 	cd ../sugarizer
-	npm install grunt grunt-contrib-jshint grunt-contrib-nodeunit grunt-contrib-uglify
+	npm install grunt grunt-contrib-jshint grunt-contrib-nodeunit grunt-terser
 	grunt -v
 	cd ../sugarizer-cordova
 	rsync -av --exclude-from='exclude.android' ../sugarizer/build/* www
