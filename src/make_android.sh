@@ -137,11 +137,11 @@ if [ $minsize == true ]; then
 fi
 if [ $full != true ]; then
 	echo --- Minimize Javascript files
-	cd ../sugarizer
+	cd www
 	npm install grunt grunt-contrib-jshint grunt-contrib-nodeunit grunt-terser
 	grunt -v
-	cd ../sugarizer-cordova
-	rsync -av --exclude-from='exclude.android' ../sugarizer/build/* www
+	rm -rf node_modules
+	cd ..
 fi
 if [ $excluded == true ]
 then
