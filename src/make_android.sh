@@ -123,8 +123,11 @@ cd ..
 echo --- Copying content
 rsync -av --exclude-from='exclude.android' ../sugarizer/* www
 
-rm ../sugarizer/activities.json
-mv ../sugarizer/activities.bak.json ../sugarizer/activities.json
+if [ $excluded == true ]
+then
+	rm ../sugarizer/activities.json
+	mv ../sugarizer/activities.bak.json ../sugarizer/activities.json
+fi
 
 cp etoys_remote.index.html www/activities/Etoys.activity/index.html
 if [ $minsize == true ]; then
