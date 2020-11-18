@@ -3,7 +3,7 @@ WORKDIR /
 
 # Install tools
 RUN apt-get update
-RUN apt-get install -y sudo gnupg gnupg1 gnupg2 rsync 
+RUN apt-get install -y sudo gnupg gnupg1 gnupg2 rsync
 
 # Install gradle
 RUN wget https://services.gradle.org/distributions/gradle-5.2.1-bin.zip
@@ -25,6 +25,9 @@ RUN mkdir /sugarizer-cordova/www
 COPY make_android.sh /sugarizer-cordova
 COPY exclude.android /sugarizer-cordova
 COPY etoys_remote.index.html /sugarizer-cordova
+COPY gradle-3.3-all.zip /sugarizer-cordova
+RUN mkdir /root/.gradle
+COPY .gradle/ /root/.gradle
 
 ENV PATH="${PATH}:/opt/android-sdk-linux:/opt/android-sdk-linux/bin:/opt/gradle/gradle-5.2.1/bin"
 ENV ANDROID_HOME="/opt/android-sdk-linux"

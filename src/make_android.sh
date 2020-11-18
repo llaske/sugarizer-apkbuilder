@@ -190,6 +190,7 @@ cp ../sugarizer/res/splash/android/drawable-port-xxhdpi.png ../sugarizer-cordova
 cp ../sugarizer/res/splash/android/drawable-port-xxxhdpi.png ../sugarizer-cordova/platforms/android/res/drawable-port-xxxhdpi/screen.png
 
 rm -f platforms/android/build/outputs/apk/*.apk
+export CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///sugarizer-cordova/gradle-3.3-all.zip
 if [ $release == true -o $sign == true ]; then
 	echo --- Build Cordova release version
 	FILENAME=android-release-unsigned.apk
