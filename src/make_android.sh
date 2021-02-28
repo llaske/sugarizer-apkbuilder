@@ -33,23 +33,24 @@ mkdir -p ../sugarizer-cordova/res
 cp -r ../sugarizer/res/* ../sugarizer-cordova/res
 sed -i -e "s/org.olpc-france.sugarizer/org.olpc_france.sugarizer/" config.xml
 sed -i -e "s/\"landscape\"/\"userLandscape\"/" config.xml
-echo n | cordova platform add android@6.3.0
-cordova plugin add cordova-plugin-inappbrowser@3.0.0
-cordova plugin add cordova-plugin-camera@2.4.0
-cordova plugin add cordova-plugin-file@4.3.1
-cordova plugin add cordova-plugin-device@1.1.0
-cordova plugin add cordova-plugin-device-motion@1.2.0
-cordova plugin add cordova-plugin-dialogs@1.2.0
-cordova plugin add cordova-plugin-file-transfer@1.6.0
-cordova plugin add cordova-plugin-fullscreen@1.1.0
+echo n | cordova platform add android@9.0.0
+cordova plugin add cordova-plugin-inappbrowser@5.0.0
+cordova plugin add cordova-plugin-camera@5.0.1
+cordova plugin add cordova-plugin-file@6.0.2
+cordova plugin add cordova-plugin-device@2.0.3
+cordova plugin add cordova-plugin-device-motion@2.0.1
+cordova plugin add cordova-plugin-dialogs@2.0.2
+cordova plugin add cordova-plugin-file-transfer@1.7.1
+cordova plugin add cordova-plugin-fullscreen@1.3.0
 cordova plugin add cordova-plugin-ios-longpress-fix@1.1.0
-cordova plugin add cordova-plugin-media@1.0.1
-cordova plugin add cordova-plugin-network-information@1.1.0
+cordova plugin add cordova-plugin-media@5.0.3
+cordova plugin add cordova-plugin-media-capture@3.0.3
+cordova plugin add cordova-plugin-network-information@2.0.2
 cordova plugin add cordova-plugin-qrscanner@3.0.1
-cordova plugin add cordova-plugin-splashscreen@4.1.0
-cordova plugin add cordova-plugin-swift-support@3.1.1
-cordova plugin add cordova-plugin-vibration@2.1.1
-cordova plugin add cordova-plugin-whitelist@1.3.1
+cordova plugin add cordova-plugin-splashscreen@6.0.0
+cordova plugin add cordova-plugin-add-swift-support@2.0.2
+cordova plugin add cordova-plugin-vibration@3.1.1
+cordova plugin add cordova-plugin-whitelist@1.3.4
 cordova plugin add cordova-plugin-ionic-keyboard@2.2.0
 cordova plugin add https://github.com/manusimpson/Phonegap-Android-VolumeControl.git
 
@@ -61,9 +62,9 @@ sign=false
 os=false
 excluded=false
 
-for i in $*; do 
+for i in $*; do
 	if [ ${i%%=*} = "exclude-activities" ]
-	then 
+	then
 		activities=${i#*=}
 		lastActivity=${activities##*,}
 		remaining=true
@@ -158,65 +159,41 @@ mkdir -p ../sugarizer-cordova/platforms/android/res/mipmap-ldpi
 mkdir -p ../sugarizer-cordova/platforms/android/res/mipmap-mdpi
 mkdir -p ../sugarizer-cordova/platforms/android/res/mipmap-hdpi
 mkdir -p ../sugarizer-cordova/platforms/android/res/mipmap-xhdpi
-mkdir -p ../sugarizer-cordova/platforms/android/res/drawable-land-hdpi
-mkdir -p ../sugarizer-cordova/platforms/android/res/drawable-land-ldpi
-mkdir -p ../sugarizer-cordova/platforms/android/res/drawable-land-mdpi
-mkdir -p ../sugarizer-cordova/platforms/android/res/drawable-land-xhdpi
-mkdir -p ../sugarizer-cordova/platforms/android/res/drawable-land-xxhdpi
-mkdir -p ../sugarizer-cordova/platforms/android/res/drawable-land-xxxhdpi
-mkdir -p ../sugarizer-cordova/platforms/android/res/drawable-port-hdpi
-mkdir -p ../sugarizer-cordova/platforms/android/res/drawable-port-ldpi
-mkdir -p ../sugarizer-cordova/platforms/android/res/drawable-port-mdpi
-mkdir -p ../sugarizer-cordova/platforms/android/res/drawable-port-xhdpi
-mkdir -p ../sugarizer-cordova/platforms/android/res/drawable-port-xxhdpi
-mkdir -p ../sugarizer-cordova/platforms/android/res/drawable-port-xxxhdpi
 cp ../sugarizer/res/icon/android/icon-144-xxhdpi.png ../sugarizer-cordova/platforms/android/res/mipmap-xxhdpi/icon.png
 cp ../sugarizer/res/icon/android/icon-192-xxxhdpi.png ../sugarizer-cordova/platforms/android/res/mipmap-xxxhdpi/icon.png
 cp ../sugarizer/res/icon/android/icon-36-ldpi.png ../sugarizer-cordova/platforms/android/res/mipmap-ldpi/icon.png
 cp ../sugarizer/res/icon/android/icon-48-mdpi.png ../sugarizer-cordova/platforms/android/res/mipmap-mdpi/icon.png
 cp ../sugarizer/res/icon/android/icon-72-hdpi.png ../sugarizer-cordova/platforms/android/res/mipmap-hdpi/icon.png
 cp ../sugarizer/res/icon/android/icon-96-xhdpi.png ../sugarizer-cordova/platforms/android/res/mipmap-xhdpi/icon.png
-cp ../sugarizer/res/splash/android/drawable-land-hdpi.png ../sugarizer-cordova/platforms/android/res/drawable-land-hdpi/screen.png
-cp ../sugarizer/res/splash/android/drawable-land-ldpi.png ../sugarizer-cordova/platforms/android/res/drawable-land-ldpi/screen.png
-cp ../sugarizer/res/splash/android/drawable-land-mdpi.png ../sugarizer-cordova/platforms/android/res/drawable-land-mdpi/screen.png
-cp ../sugarizer/res/splash/android/drawable-land-xhdpi.png ../sugarizer-cordova/platforms/android/res/drawable-land-xhdpi/screen.png
-cp ../sugarizer/res/splash/android/drawable-land-xxhdpi.png ../sugarizer-cordova/platforms/android/res/drawable-land-xxhdpi/screen.png
-cp ../sugarizer/res/splash/android/drawable-land-xxxhdpi.png ../sugarizer-cordova/platforms/android/res/drawable-land-xxxhdpi/screen.png
-cp ../sugarizer/res/splash/android/drawable-port-hdpi.png ../sugarizer-cordova/platforms/android/res/drawable-port-hdpi/screen.png
-cp ../sugarizer/res/splash/android/drawable-port-ldpi.png ../sugarizer-cordova/platforms/android/res/drawable-port-ldpi/screen.png
-cp ../sugarizer/res/splash/android/drawable-port-mdpi.png ../sugarizer-cordova/platforms/android/res/drawable-port-mdpi/screen.png
-cp ../sugarizer/res/splash/android/drawable-port-xhdpi.png ../sugarizer-cordova/platforms/android/res/drawable-port-xhdpi/screen.png
-cp ../sugarizer/res/splash/android/drawable-port-xxhdpi.png ../sugarizer-cordova/platforms/android/res/drawable-port-xxhdpi/screen.png
-cp ../sugarizer/res/splash/android/drawable-port-xxxhdpi.png ../sugarizer-cordova/platforms/android/res/drawable-port-xxxhdpi/screen.png
 
 rm -f platforms/android/build/outputs/apk/*.apk
-export CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///sugarizer-cordova/gradle-3.3-all.zip
+export CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///sugarizer-cordova/gradle-6.5-all.zip
 if [ $release == true -o $sign == true ]; then
 	echo --- Build Cordova release version
-	FILENAME=android-release-unsigned.apk
+	FILENAME=release/app-release-unsigned.apk
 	cordova build android --release
 else
 	echo --- Build Cordova debug version
-	FILENAME=android-debug.apk
+	FILENAME=debug/app-debug.apk
 	cordova build android
 fi
 
 
 echo --- Sign release version
 if [ $sign == true ]; then
-	cd platforms/android/build/outputs/apk
-	jarsigner -storepass ${SUGARIZER_STOREPASS} -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /output/${SUGARIZER_KEYSTOREFILE} android-release-unsigned.apk ${SUGARIZER_STOREALIAS}
-	jarsigner -verify -verbose -certs android-release-unsigned.apk
-/opt/android-sdk-linux/build-tools/28.0.3/zipalign -v 4 android-release-unsigned.apk android-release-signed.apk
+	cd platforms/android/app/build/outputs/apk/release
+	jarsigner -storepass ${SUGARIZER_STOREPASS} -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /output/${SUGARIZER_KEYSTOREFILE} app-release-unsigned.apk ${SUGARIZER_STOREALIAS}
+	jarsigner -verify -verbose -certs app-release-unsigned.apk
+/opt/android-sdk-linux/build-tools/29.0.3/zipalign -v 4 app-release-unsigned.apk app-release-signed.apk
 	cd ../../../../..
-	FILENAME=android-release-signed.apk
+	FILENAME=release/app-release-signed.apk
 fi
 
 echo --- Copy APK to output
 if [ $os == true ]; then
-	cp /sugarizer-cordova/platforms/android/build/outputs/apk/$FILENAME /output/sugarizeros.apk
+	cp /sugarizer-cordova/platforms/android/app/build/outputs/apk/$FILENAME /output/sugarizeros.apk
 else
-	cp /sugarizer-cordova/platforms/android/build/outputs/apk/$FILENAME /output/sugarizer.apk
+	cp /sugarizer-cordova/platforms/android/app/build/outputs/apk/$FILENAME /output/sugarizer.apk
 fi
 
 date
