@@ -3,7 +3,7 @@
 # Sugarizer APK builder
 
 
-Sugarizer APK builder is a simple way to generate and customize yourself [Sugarizer for Android](https://play.google.com/store/apps/details?id=org.olpc_france.sugarizer). It provides a way to generate an APK without any knowledge on Android developpement.
+Sugarizer APK builder is a simple way to generate and customize yourself [Sugarizer for Android](https://play.google.com/store/apps/details?id=org.olpc_france.sugarizer). It provides a way to generate an APK without any knowledge on Android development.
 
 Note that [Docker](https://www.docker.com) should be installed on your computer to use Sugarizer APK builder.
 
