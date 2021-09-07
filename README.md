@@ -14,9 +14,9 @@ Here's the command to launch:
 	git clone https://github.com/llaske/sugarizer
 	git clone https://github.com/llaske/cordova-plugin-sugarizeros
 	sudo docker run --rm -it \
-		 -v `pwd`/sugarizer:/sugarizer \
-		 -v `pwd`/cordova-plugin-sugarizeros:/cordova-plugin-sugarizeros \
-		 -v `pwd`:/output \
+		 -v "`pwd`/sugarizer:/sugarizer" \
+		 -v "`pwd`/cordova-plugin-sugarizeros:/cordova-plugin-sugarizeros" \
+		 -v "`pwd`:/output" \
 		 llaske/sugarizer-apkbuilder:latest
 
 First, you need to clone the [Sugarizer repository](https://github.com/llaske/sugarizer), then the [Cordova plugin for Sugarizer](https://github.com/llaske/cordova-plugin-sugarizeros).
