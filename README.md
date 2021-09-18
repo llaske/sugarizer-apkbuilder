@@ -3,7 +3,7 @@
 # Sugarizer APK builder
 
 
-Sugarizer APK builder is a simple way to generate and customize yourself [Sugarizer for Android](https://play.google.com/store/apps/details?id=org.olpc_france.sugarizer). It provides a way to generate an APK without any knowledge on Android developpement.
+Sugarizer APK builder is a simple way to generate and customize yourself [Sugarizer for Android](https://play.google.com/store/apps/details?id=org.olpc_france.sugarizer). It provides a way to generate an APK without any knowledge on Android development.
 
 Note that [Docker](https://www.docker.com) should be installed on your computer to use Sugarizer APK builder.
 
@@ -14,9 +14,9 @@ Here's the command to launch:
 	git clone https://github.com/llaske/sugarizer
 	git clone https://github.com/llaske/cordova-plugin-sugarizeros
 	sudo docker run --rm -it \
-		 -v `pwd`/sugarizer:/sugarizer \
-		 -v `pwd`/cordova-plugin-sugarizeros:/cordova-plugin-sugarizeros \
-		 -v `pwd`:/output \
+		 -v "`pwd`/sugarizer:/sugarizer" \
+		 -v "`pwd`/cordova-plugin-sugarizeros:/cordova-plugin-sugarizeros" \
+		 -v "`pwd`:/output" \
 		 llaske/sugarizer-apkbuilder:latest
 
 First, you need to clone the [Sugarizer repository](https://github.com/llaske/sugarizer), then the [Cordova plugin for Sugarizer](https://github.com/llaske/cordova-plugin-sugarizeros).
