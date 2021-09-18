@@ -1,6 +1,0 @@
-apply plugin: "scala"
-apply plugin: "idea"
-
-idea {
-    targetVersion = "13"
-}

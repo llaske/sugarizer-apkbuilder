@@ -5,17 +5,12 @@ WORKDIR /
 RUN apt-get update
 RUN apt-get install -y sudo gnupg gnupg1 gnupg2 rsync
 
-# Install gradle
-RUN wget https://services.gradle.org/distributions/gradle-5.2.1-bin.zip
-RUN unzip -d /opt/gradle gradle-5.2.1-bin.zip
-RUN rm gradle-5.2.1-bin.zip
-
 # Install node
-RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 RUN apt-get install -y nodejs
 
 # Intall Cordova
-RUN sudo npm install -g cordova@7.1 grunt-cli
+RUN sudo npm install -g cordova@10.0 grunt-cli
 
 # Sugarizer settings
 RUN cordova create sugarizer-cordova
@@ -25,13 +20,32 @@ RUN mkdir /sugarizer-cordova/www
 COPY make_android.sh /sugarizer-cordova
 COPY exclude.android /sugarizer-cordova
 COPY etoys_remote.index.html /sugarizer-cordova
-COPY gradle-3.3-all.zip /sugarizer-cordova
-RUN mkdir /root/.gradle
-COPY .gradle/ /root/.gradle
+COPY gradle-6.5-all.zip /sugarizer-cordova
 
-ENV PATH="${PATH}:/opt/android-sdk-linux:/opt/android-sdk-linux/bin:/opt/gradle/gradle-5.2.1/bin"
+ENV PATH="${PATH}:/opt/android-sdk-linux:/opt/android-sdk-linux/bin:/opt/gradle/gradle-6.8.3/bin"
 ENV ANDROID_HOME="/opt/android-sdk-linux"
 ENV ANDROID_SDK_ROOT="/opt/android-sdk-linux"
+
+# Install Gradle
+WORKDIR /opt/
+RUN mkdir gradle
+WORKDIR /opt/gradle
+RUN wget https://services.gradle.org/distributions/gradle-6.8.3-bin.zip
+RUN unzip gradle-6.8.3-bin.zip
+RUN rm gradle-6.8.3-bin.zip
+
+# Download Android SDK 29
+WORKDIR /opt/android-sdk-linux/build-tools/
+RUN wget https://dl.google.com/android/repository/build-tools_r29.0.3-linux.zip
+RUN unzip build-tools_r29.0.3-linux.zip
+RUN mv android-10 29.0.3
+RUN rm build-tools_r29.0.3-linux.zip
+WORKDIR /opt/android-sdk-linux/platforms/
+RUN wget https://dl.google.com/android/repository/platform-29_r05.zip
+RUN unzip platform-29_r05.zip
+RUN mv android-10 android-29
+RUN rm platform-29_r05.zip
+
 
 WORKDIR /sugarizer-cordova
 
