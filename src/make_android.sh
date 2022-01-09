@@ -168,6 +168,7 @@ cp ../sugarizer/res/icon/android/icon-96-xhdpi.png ../sugarizer-cordova/platform
 
 rm -f platforms/android/build/outputs/apk/*.apk
 export CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///sugarizer-cordova/gradle-6.5-all.zip
+sed -i -e "s/startsWith('1.8.')/startsWith('11.')/" platforms/android/cordova/lib/check_reqs.js
 if [ $release == true -o $sign == true ]; then
 	echo --- Build Cordova release version
 	FILENAME=release/app-release-unsigned.apk
@@ -182,9 +183,9 @@ fi
 echo --- Sign release version
 if [ $sign == true ]; then
 	cd platforms/android/app/build/outputs/apk/release
-	jarsigner -storepass ${SUGARIZER_STOREPASS} -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /output/${SUGARIZER_KEYSTOREFILE} app-release-unsigned.apk ${SUGARIZER_STOREALIAS}
-	jarsigner -verify -verbose -certs app-release-unsigned.apk
-/opt/android-sdk-linux/build-tools/29.0.3/zipalign -v 4 app-release-unsigned.apk app-release-signed.apk
+	/opt/android-sdk-linux/build-tools/29.0.3/zipalign -v 4 app-release-unsigned.apk app-release-aligned.apk
+	/opt/android-sdk-linux/build-tools/29.0.3/apksigner sign --ks /output/${SUGARIZER_KEYSTOREFILE} --ks-pass env:SUGARIZER_STOREPASS --out app-release-signed.apk app-release-aligned.apk
+	/opt/android-sdk-linux/build-tools/29.0.3/apksigner verify app-release-signed.apk
 	cd ../../../../..
 	FILENAME=release/app-release-signed.apk
 fi

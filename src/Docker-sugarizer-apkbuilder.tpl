@@ -6,7 +6,7 @@ RUN apt-get update
 RUN apt-get install -y sudo gnupg gnupg1 gnupg2 rsync
 
 # Install node
-RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 RUN apt-get install -y nodejs
 
 # Intall Cordova
@@ -25,6 +25,7 @@ COPY gradle-6.5-all.zip /sugarizer-cordova
 ENV PATH="${PATH}:/opt/android-sdk-linux:/opt/android-sdk-linux/bin:/opt/gradle/gradle-6.8.3/bin"
 ENV ANDROID_HOME="/opt/android-sdk-linux"
 ENV ANDROID_SDK_ROOT="/opt/android-sdk-linux"
+ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64/"
 
 # Install Gradle
 WORKDIR /opt/
