@@ -33,26 +33,25 @@ mkdir -p ../sugarizer-cordova/res
 cp -r ../sugarizer/res/* ../sugarizer-cordova/res
 sed -i -e "s/org.olpc-france.sugarizer/org.olpc_france.sugarizer/" config.xml
 sed -i -e "s/\"landscape\"/\"userLandscape\"/" config.xml
-echo n | cordova platform add android@9.0.0
-cordova plugin add cordova-plugin-inappbrowser@5.0.0
-cordova plugin add cordova-plugin-camera@5.0.1
-cordova plugin add cordova-plugin-file@6.0.2
-cordova plugin add cordova-plugin-device@2.0.3
-cordova plugin add cordova-plugin-device-motion@2.0.1
+echo n | cordova platform add android@12.0.0
+cordova plugin add cordova-plugin-inappbrowser@6.0.0
+cordova plugin add cordova-plugin-camera@7.0.0
+cordova plugin add cordova-plugin-file@8.1.0
+cordova plugin add cordova-plugin-device@3.0.0
 cordova plugin add cordova-plugin-dialogs@2.0.2
-cordova plugin add cordova-plugin-file-transfer@1.7.1
+cordova plugin add cordova-plugin-file-transfer@2.0.0
 cordova plugin add cordova-plugin-fullscreen@1.3.0
 cordova plugin add cordova-plugin-ios-longpress-fix@1.1.0
-cordova plugin add cordova-plugin-media@5.0.3
-cordova plugin add cordova-plugin-media-capture@3.0.3
-cordova plugin add cordova-plugin-network-information@2.0.2
-cordova plugin add cordova-plugin-qrscanner@3.0.1
-cordova plugin add cordova-plugin-splashscreen@6.0.0
+cordova plugin add cordova-plugin-media@7.0.0
+cordova plugin add cordova-plugin-media-capture@5.0.0
+cordova plugin add cordova-plugin-network-information@3.0.0
 cordova plugin add cordova-plugin-add-swift-support@2.0.2
 cordova plugin add cordova-plugin-vibration@3.1.1
-cordova plugin add cordova-plugin-whitelist@1.3.4
+cordova plugin add cordova-plugin-audioinput@1.0.3
 cordova plugin add cordova-plugin-ionic-keyboard@2.2.0
 cordova plugin add https://github.com/manusimpson/Phonegap-Android-VolumeControl.git
+cordova plugin add https://github.com/Meeco/cordova-plugin-qrscanner.git
+cordova plugin rm cordova-plugin-whitelist
 
 echo --- Reading arguments
 minsize=false
@@ -167,8 +166,6 @@ cp ../sugarizer/res/icon/android/icon-72-hdpi.png ../sugarizer-cordova/platforms
 cp ../sugarizer/res/icon/android/icon-96-xhdpi.png ../sugarizer-cordova/platforms/android/res/mipmap-xhdpi/icon.png
 
 rm -f platforms/android/build/outputs/apk/*.apk
-export CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=file:///sugarizer-cordova/gradle-6.5-all.zip
-sed -i -e "s/startsWith('1.8.')/startsWith('11.')/" platforms/android/cordova/lib/check_reqs.js
 if [ $release == true -o $sign == true ]; then
 	echo --- Build Cordova release version
 	FILENAME=release/app-release-unsigned.apk
