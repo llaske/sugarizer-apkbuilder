@@ -33,7 +33,7 @@ mkdir -p ../sugarizer-cordova/res
 cp -r ../sugarizer/res/* ../sugarizer-cordova/res
 sed -i -e "s/org.olpc-france.sugarizer/org.olpc_france.sugarizer/" config.xml
 sed -i -e "s/\"landscape\"/\"userLandscape\"/" config.xml
-echo n | cordova platform add android@12.0.0
+echo n | cordova platform add android@13.0.0
 cordova plugin add cordova-plugin-inappbrowser@6.0.0
 cordova plugin add cordova-plugin-camera@7.0.0
 cordova plugin add cordova-plugin-file@8.1.0
@@ -111,6 +111,7 @@ if [ $os == true ]; then
 	sed -i -e "s/org.olpc_france.sugarizer/org.olpc_france.sugarizeros/" config.xml
 	sed -i -e "s/<name>Sugarizer/<name>Sugarizer OS/" config.xml
 	cordova plugin add ../cordova-plugin-sugarizeros
+	mv /sugarizer-cordova/platforms/android/app/src/main/java/org/olpc_france/sugarizer/ /sugarizer-cordova/platforms/android/app/src/main/java/org/olpc_france/sugarizeros
 else
 	cordova plugin remove cordova-plugin-sugarizeros
 fi
@@ -166,32 +167,45 @@ cp ../sugarizer/res/icon/android/icon-72-hdpi.png ../sugarizer-cordova/platforms
 cp ../sugarizer/res/icon/android/icon-96-xhdpi.png ../sugarizer-cordova/platforms/android/res/mipmap-xhdpi/icon.png
 
 rm -f platforms/android/build/outputs/apk/*.apk
-if [ $release == true -o $sign == true ]; then
+if [ $release == true ]; then
 	echo --- Build Cordova release version
-	FILENAME=release/app-release-unsigned.apk
-	cordova build android --release
+	FILENAME=apk/release/app-release-unsigned.apk
+	cordova build android --release -- --packageType=apk
+elif [ $sign == true ]; then
+	echo --- Build Cordova sign version
+	FILENAME=apk/release/app-release-unsigned.apk
+	cordova build android --release -- --packageType=apk
 else
 	echo --- Build Cordova debug version
-	FILENAME=debug/app-debug.apk
-	cordova build android
+	FILENAME=apk/debug/app-debug.apk
+	cordova build android -- --packageType=apk
 fi
-
+if [ $os == true ]; then
+	OUTPUTFILENAME=sugarizeros.apk
+else
+	OUTPUTFILENAME=sugarizer.apk
+fi
 
 echo --- Sign release version
 if [ $sign == true ]; then
 	cd platforms/android/app/build/outputs/apk/release
-	/opt/android-sdk-linux/build-tools/29.0.3/zipalign -v 4 app-release-unsigned.apk app-release-aligned.apk
-	/opt/android-sdk-linux/build-tools/29.0.3/apksigner sign --ks /output/${SUGARIZER_KEYSTOREFILE} --ks-pass env:SUGARIZER_STOREPASS --out app-release-signed.apk app-release-aligned.apk
-	/opt/android-sdk-linux/build-tools/29.0.3/apksigner verify app-release-signed.apk
+	/opt/android-sdk-linux/build-tools/34.0.0/zipalign -v 4 app-release-unsigned.apk app-release-aligned.apk
+	/opt/android-sdk-linux/build-tools/34.0.0/apksigner sign --ks /output/${SUGARIZER_KEYSTOREFILE} --ks-pass env:SUGARIZER_STOREPASS --out app-release-signed.apk app-release-aligned.apk
+	/opt/android-sdk-linux/build-tools/34.0.0/apksigner verify app-release-signed.apk
 	cd ../../../../..
-	FILENAME=release/app-release-signed.apk
+	FILENAME=apk/release/app-release-signed.apk
+	if [ $os == true ]; then
+		OUTPUTFILENAME=sugarizeros.apk
+	else
+		OUTPUTFILENAME=sugarizer.apk
+	fi
 fi
 
 echo --- Copy APK to output
 if [ $os == true ]; then
-	cp /sugarizer-cordova/platforms/android/app/build/outputs/apk/$FILENAME /output/sugarizeros.apk
+	cp /sugarizer-cordova/platforms/android/app/build/outputs/$FILENAME /output/$OUTPUTFILENAME
 else
-	cp /sugarizer-cordova/platforms/android/app/build/outputs/apk/$FILENAME /output/sugarizer.apk
+	cp /sugarizer-cordova/platforms/android/app/build/outputs/$FILENAME /output/$OUTPUTFILENAME
 fi
 
 date
