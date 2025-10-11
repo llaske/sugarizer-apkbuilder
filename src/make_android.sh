@@ -138,6 +138,8 @@ if [ $minsize == true ]; then
 	rm -rf www/activities/Abecedarium.activity/images/database/*
 	rm -rf www/activities/Scratch.activity/static/internal-assets/*
 	sed -i -e 's/class="offlinemode"//' www/activities/Scratch.activity/index.html
+	rm -rf www/activities/HumanBody.activity/models
+	rm -rf www/activities/Stickman.activity/models
 fi
 if [ $full != true ]; then
 	echo --- Minimize Javascript files
