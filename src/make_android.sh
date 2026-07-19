@@ -35,7 +35,7 @@ sed -i -e "s/org.olpc-france.sugarizer/org.olpc_france.sugarizer/" config.xml
 sed -i -e "s/\"landscape\"/\"userLandscape\"/" config.xml
 echo n | cordova platform add android@13.0.0
 cordova plugin add cordova-plugin-inappbrowser@6.0.0
-cordova plugin add cordova-plugin-camera@7.0.0
+cordova plugin add cordova-plugin-camera@8.0.0
 cordova plugin add cordova-plugin-file@8.1.0
 cordova plugin add cordova-plugin-device@3.0.0
 cordova plugin add cordova-plugin-dialogs@2.0.2
@@ -43,7 +43,7 @@ cordova plugin add cordova-plugin-file-transfer@2.0.0
 cordova plugin add cordova-plugin-fullscreen@1.3.0
 cordova plugin add cordova-plugin-ios-longpress-fix@1.1.0
 cordova plugin add cordova-plugin-media@7.0.0
-cordova plugin add cordova-plugin-media-capture@5.0.0
+cordova plugin add cordova-plugin-media-capture@6.0.0
 cordova plugin add cordova-plugin-network-information@3.0.0
 cordova plugin add cordova-plugin-add-swift-support@2.0.2
 cordova plugin add cordova-plugin-vibration@3.1.1
